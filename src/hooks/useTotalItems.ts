@@ -43,37 +43,42 @@ export default function useTotalItems(
     let itemsFiltered = [...itemsSearching.value];
     if (filterOptions.value) {
       filterOptions.value.forEach((option: FilterOption) => {
-        itemsFiltered = itemsFiltered.filter((item) => {
-          const { field, comparison, criteria } = option;
-          if (typeof comparison === 'function') {
-            return comparison(getItemValue(field, item), criteria as string);
-          }
-          const itemValue = getItemValue(field, item);
-          switch (comparison) {
-            case '=':
-              return itemValue === criteria;
-            case '!=':
-              return itemValue !== criteria;
-            case '>':
-              return itemValue > criteria;
-            case '<':
-              return itemValue < criteria;
-            case '<=':
-              return itemValue <= criteria;
-            case '>=':
-              return itemValue >= criteria;
-            case 'between':
-              return itemValue >= Math.min(...criteria) && itemValue <= Math.max(...criteria);
-            case 'in':
-              return criteria.includes(itemValue);
-            default:
-              return itemValue === criteria;
-          }
-        });
+      itemsFiltered = itemsFiltered.filter((item) => {
+        const { field, comparison, criteria } = option;
+        if (typeof comparison === 'function') {
+          return comparison(getItemValue(field, item), criteria as string);
+        }
+        const itemValue = String(getItemValue(field as string, item));
+        const criteriaValue = String(criteria);
+        switch (comparison) {
+          case '=':
+            return itemValue === criteriaValue;
+          case '!=':
+            return itemValue !== criteriaValue;
+          case '>':
+            return Number(itemValue) > Number(criteriaValue);
+          case '<':
+            return Number(itemValue) < Number(criteriaValue);
+          case '<=':
+            return Number(itemValue) <= Number(criteriaValue);
+          case '>=':
+            return Number(itemValue) >= Number(criteriaValue);
+          case 'between':
+            return Number(itemValue) >= Math.min(...criteria) && Number(itemValue) <= Math.max(...criteria);
+          case 'in':
+            if (Array.isArray(criteria)) {
+              return (criteria as string[]).includes(itemValue);
+            } else {
+              throw new Error('Criteria must be an array when comparison is "in".');
+            }
+          default:
+            return itemValue === criteriaValue;
+        }
       });
-      return itemsFiltered;
-    }
-    return itemsSearching.value;
+    });
+    return itemsFiltered;
+  }
+  return itemsSearching.value;
   });
 
   watch(itemsFiltering, (newVal) => {
