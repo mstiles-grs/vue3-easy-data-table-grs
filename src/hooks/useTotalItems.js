@@ -132,6 +132,7 @@ export default function useTotalItems(clientSortOptions, filterOptions, isServer
             emits('selectAll');
     };
     const toggleSelectItem = (item) => {
+        console.log('test', item);
         const isAlreadyChecked = item.checkbox;
         // eslint-disable-next-line no-param-reassign
         delete item.checkbox;
