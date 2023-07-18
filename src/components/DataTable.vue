@@ -52,12 +52,10 @@
             v-if="header.text === 'checkbox'"
             :key="multipleSelectStatus"
             :status="multipleSelectStatus"
-            :disabled="totalItemsLength > 3"
+            :disabled="totalItemsLength > 1000"
             class="my-custom-tippy-theme"
             v-tippy="{
-              content: totalItemsLength > 3 ? 'Please filter the results to less than 1000 items to enable selection.' : '',
-              theme: 'tomato',
-
+              content: totalItemsLength > 1000 ? 'Please filter the results to less than 1000 items to enable selection.' : '',
             }"
             @change="toggleSelectAll"
           />
@@ -639,12 +637,7 @@ defineExpose({
 });
 
 </script>
-<style scoped>
-  * >>> .tippy-box[data-theme~='tomato'] {
-    background-color: tomato;
-    color: yellow;
-  }
-</style>
+
 
 <style>
 

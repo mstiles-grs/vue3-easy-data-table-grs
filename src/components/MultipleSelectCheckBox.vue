@@ -20,13 +20,13 @@ const emits = defineEmits(['change']);
 
 const props = defineProps({
   status: { type: String as PropType<'noneSelected' | 'partSelected' | 'allSelected'>, required: true },
-  disabled: { type: Boolean, default: false }, // Add this line
+  disabled: { type: Boolean, default: false },
 });
 
 const isChecked = computed(() => props.status === 'allSelected');
 
 const toggleChecked = () => {
-  if (!props.disabled) { // Add this line
+  if (!props.disabled) {
     emits('change', !isChecked.value);
   }
 };
@@ -44,6 +44,12 @@ $checkbox-checked-color: v-bind(themeColor);
     &.allSelected, &.partSelected {
       + label:before{
         background: $checkbox-checked-color;
+      }
+    }
+
+    &[disabled] {
+      + label:before {
+        background-color: gray;
       }
     }
   }
