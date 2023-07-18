@@ -76,7 +76,7 @@
             class="filter-icon"
             @click.stop="showNameFilter=!showNameFilter"
           >
-            icon
+            
           </span>
           {{ header.text }}
           <div

@@ -6,7 +6,7 @@
 .vue3-easy-data-table__main {
   border: none;
   width: 100%;
-  overflow: auto;
+  // overflow: auto;
   background-color: var(--easy-table-body-row-background-color);
 
   &::-webkit-scrollbar-track
@@ -107,6 +107,9 @@ table {
   height: var(--easy-table-header-height);
 }
 .vue3-easy-data-table__header th {
+  position: sticky; // Add this line
+  top: 0; // Add this line
+  z-index: 100;
   background-color: var(--easy-table-header-background-color);
   color: var(--easy-table-header-font-color);
   border: none;

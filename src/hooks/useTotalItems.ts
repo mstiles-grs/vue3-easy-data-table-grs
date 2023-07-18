@@ -147,7 +147,7 @@ export default function useTotalItems(
 
   const toggleSelectItem = (item: Item):void => {
 
-    console.log('test',item )
+    console.log('123',item )
     const isAlreadyChecked = item.checkbox;
     // eslint-disable-next-line no-param-reassign
     delete item.checkbox;
