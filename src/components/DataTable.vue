@@ -44,8 +44,8 @@
                 'asc': header.sortable && header.sortType === 'asc',
                 'shadow': header.value === lastFixedColumn,
               // eslint-disable-next-line max-len
-              }, typeof headerItemClassName === 'string' ? headerItemClassName : headerItemClassName(header as Header, index + 1)]"
-              :style="getFixedDistance(header.value)"
+            }, typeof headerItemClassName === 'string' ? headerItemClassName : headerItemClassName(header as Header, index + 1), 'sticky-header']"
+            :style="getFixedDistance(header.value)"
               @click.stop="(header.sortable && header.sortType) ? updateSortField(header.value, header.sortType) : null"
             >
               <MultipleSelectCheckBox
@@ -73,7 +73,7 @@
                   v-else-if="slots['header']"
                   name="header"
                   v-bind="header"
-                />   
+                />
                 <span
                   v-else
                   class="header-text"
@@ -145,7 +145,7 @@
                 // eslint-disable-next-line max-len
                 }, typeof bodyItemClassName === 'string' ? bodyItemClassName : bodyItemClassName(column, index + 1), `direction-${bodyTextDirection}`]"
                 @click="column === 'expand' ? updateExpandingItemIndexList(index + prevPageEndIndex, item, $event) : null"
-              > 
+              >
                 <slot
                   v-if="slots[`item-${column}`]"
                   :name="`item-${column}`"
@@ -632,6 +632,14 @@ defineExpose({
 </script>
 
 <style>
+
+.sticky-header {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background-color: white; /* change this to match your table's background color */
+}
+
   :root {
     /*table*/
     --easy-table-border: 1px solid #e0e0e0;
