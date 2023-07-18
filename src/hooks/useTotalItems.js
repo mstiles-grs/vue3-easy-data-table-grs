@@ -70,29 +70,17 @@ export default function useTotalItems(clientSortOptions, filterOptions, isServer
             emits('updateFilter', newVal);
         }
     }, { immediate: true, deep: true });
-    function recursionMuiltSort(sortByArr, sortDescArr, itemsToSort, index) {
-        const sortBy = sortByArr[index];
-        const sortDesc = sortDescArr[index];
-        const sorted = (index === 0 ? itemsToSort
-            : recursionMuiltSort(sortByArr, sortDescArr, itemsToSort, index - 1)).sort((a, b) => {
-            let isAllSame = true;
-            for (let i = 0; i < index; i += 1) {
-                if (getItemValue(sortByArr[i], a) !== getItemValue(sortByArr[i], b)) {
-                    isAllSame = false;
-                    break;
+    const multiSortFunction = (sortByArr, sortDescArr, itemsToSort) => {
+        return itemsToSort.sort((a, b) => {
+            for (let i = 0; i < sortByArr.length; i += 1) {
+                const comparison = getItemValue(sortByArr[i], a) - getItemValue(sortByArr[i], b);
+                if (comparison !== 0) {
+                    return sortDescArr[i] ? -comparison : comparison;
                 }
-            }
-            if (isAllSame) {
-                if (getItemValue(sortBy, a) < getItemValue(sortBy, b))
-                    return sortDesc ? 1 : -1;
-                if (getItemValue(sortBy, a) > getItemValue(sortBy, b))
-                    return sortDesc ? -1 : 1;
-                return 0;
             }
             return 0;
         });
-        return sorted;
-    }
+    };
     // flow: searching => filtering => sorting
     // (last step: sorting)
     const totalItems = computed(() => {
@@ -102,11 +90,10 @@ export default function useTotalItems(clientSortOptions, filterOptions, isServer
             return itemsFiltering.value;
         const { sortBy, sortDesc } = clientSortOptions.value;
         const itemsFilteringSorted = [...itemsFiltering.value];
-        // multi sort
-        if (multiSort && Array.isArray(sortBy) && Array.isArray(sortDesc)) {
+        if (multiSort.value && Array.isArray(sortBy) && Array.isArray(sortDesc)) {
             if (sortBy.length === 0)
                 return itemsFilteringSorted;
-            return recursionMuiltSort(sortBy, sortDesc, itemsFilteringSorted, sortBy.length - 1);
+            return multiSortFunction(sortBy, sortDesc, itemsFilteringSorted);
         }
         // eslint-disable-next-line vue/no-side-effects-in-computed-properties
         return itemsFilteringSorted.sort((a, b) => {
@@ -132,11 +119,8 @@ export default function useTotalItems(clientSortOptions, filterOptions, isServer
             emits('selectAll');
     };
     const toggleSelectItem = (item) => {
-        console.log('123', item);
         const isAlreadyChecked = item.checkbox;
-        // eslint-disable-next-line no-param-reassign
         delete item.checkbox;
-        // eslint-disable-next-line no-param-reassign
         delete item.index;
         if (!isAlreadyChecked) {
             const selectItemsArr = selectItemsComputed.value;
@@ -145,8 +129,7 @@ export default function useTotalItems(clientSortOptions, filterOptions, isServer
             emits('selectRow', item);
         }
         else {
-            selectItemsComputed.value = selectItemsComputed.value.filter((selectedItem) => JSON.stringify(selectedItem)
-                !== JSON.stringify(item));
+            selectItemsComputed.value = selectItemsComputed.value.filter((selectedItem) => selectedItem.id !== item.id);
             emits('deselectRow', item);
         }
     };

@@ -7,6 +7,7 @@
       type="checkbox"
       :checked="isChecked"
       :class="status"
+      :disabled="disabled"
     >
     <label for="checbox" />
   </div>
@@ -19,12 +20,15 @@ const emits = defineEmits(['change']);
 
 const props = defineProps({
   status: { type: String as PropType<'noneSelected' | 'partSelected' | 'allSelected'>, required: true },
+  disabled: { type: Boolean, default: false }, // Add this line
 });
 
 const isChecked = computed(() => props.status === 'allSelected');
 
 const toggleChecked = () => {
-  emits('change', !isChecked.value);
+  if (!props.disabled) { // Add this line
+    emits('change', !isChecked.value);
+  }
 };
 
 const themeColor = inject('themeColor');

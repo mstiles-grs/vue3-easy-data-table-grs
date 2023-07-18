@@ -48,12 +48,19 @@
             :style="getFixedDistance(header.value)"
               @click.stop="(header.sortable && header.sortType) ? updateSortField(header.value, header.sortType) : null"
             >
-              <MultipleSelectCheckBox
-                v-if="header.text === 'checkbox'"
-                :key="multipleSelectStatus"
-                :status="multipleSelectStatus"
-                @change="toggleSelectAll"
-              />
+            <MultipleSelectCheckBox
+            v-if="header.text === 'checkbox'"
+            :key="multipleSelectStatus"
+            :status="multipleSelectStatus"
+            :disabled="totalItemsLength > 3"
+            class="my-custom-tippy-theme"
+            v-tippy="{
+              content: totalItemsLength > 3 ? 'Please filter the results to less than 1000 items to enable selection.' : '',
+              theme: 'tomato',
+
+            }"
+            @change="toggleSelectAll"
+          />
               <span
                 v-else
                 class="header"
@@ -315,13 +322,14 @@ import usePagination from '../hooks/usePagination';
 import useRows from '../hooks/useRows';
 import useServerOptions from '../hooks/useServerOptions';
 import useTotalItems from '../hooks/useTotalItems';
-
 import type { Header, Item } from '../types/main';
 import type { HeaderForRender } from '../types/internal';
 
 // eslint-disable-next-line import/extensions
 import { generateColumnContent } from '../utils';
 import propsWithDefault from '../propsWithDefault';
+import 'tippy.js/dist/tippy.css'
+
 
 const props = defineProps({
   ...propsWithDefault,
@@ -334,6 +342,7 @@ const props = defineProps({
     required: true,
   },
 });
+
 
 const {
   tableNodeId,
@@ -630,6 +639,12 @@ defineExpose({
 });
 
 </script>
+<style scoped>
+  * >>> .tippy-box[data-theme~='tomato'] {
+    background-color: tomato;
+    color: yellow;
+  }
+</style>
 
 <style>
 
@@ -639,6 +654,7 @@ defineExpose({
   z-index: 1;
   background-color: white; /* change this to match your table's background color */
 }
+
 
   :root {
     /*table*/
