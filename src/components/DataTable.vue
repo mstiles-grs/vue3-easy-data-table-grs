@@ -55,7 +55,7 @@
             :disabled="totalItemsLength > 1000"
             class="my-custom-tippy-theme"
             v-tippy="{
-              content: totalItemsLength > 1000 ? 'Please filter the results to less than 1000 items to enable selection.' : '',
+              content: totalItemsLength > 1000 ? 'Please filter the results to less than 1000 items to enable select all.' : '',
             }"
             @change="toggleSelectAll"
           />

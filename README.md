@@ -3,7 +3,17 @@
 </p>
 
 ## Introduction
-vue3-easy-data-table is a customizable and easy-to-use data table component made with Vue.js 3.x.
+
+This is a fork off of vue3-easy-data-table. 99% of the code is the same excpect for a few key differences:
+
+1st: The select all will only work on 1000 items or less.
+2nd: Tippy.js was installed for a hover over to notify the user of this change
+3rd: The table headers no longer have a fixed position, on overflow they become sticky
+4th: The tsconfig.json module was changed to commonJs to ESNext.
+5th: The multisort recurrsion for data filtering was modified
+6th: In useTotalItems.ts for the fucntion toggleSelectItem the item now requires an id
+
+These changes stem from me having an exterior way to filter data, and I am also mostly using large datasets.
 
 ## Website
 https://hc200ok.github.io/vue3-easy-data-table-doc/

@@ -3,7 +3,7 @@
   "author": "HC200ok",
   "description": "A customizable and easy-to-use data table component made with Vue.js 3.x.",
   "private": false,
-  "version": "1.5.47",
+  "version": "1.5.48",
   "types": "./types/main.d.ts",
   "license": "MIT",
   "files": [
@@ -58,5 +58,15 @@
     "vitest": "^0.13.1",
     "vue-eslint-parser": "^9.0.1",
     "vue-tsc": "^0.34.7"
+  },
+  "directories": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mstiles-grs/vue3-easy-data-table-grs.git"
+  },
+  "bugs": {
+    "url": "https://github.com/mstiles-grs/vue3-easy-data-table-grs/issues"
   }
 }
